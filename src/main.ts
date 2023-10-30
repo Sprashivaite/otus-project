@@ -10,17 +10,11 @@ async function bootstrap() {
     options: {
       url: 'localhost:5000',
       protoPath: [
-        join(__dirname, '../user/user.proto'),
-        join(__dirname, '../auth/auth.proto'),
+        join(__dirname, './user/user.proto'),
+        join(__dirname, './auth/auth.proto'),
+        join(__dirname, './message/message.proto'),
       ],
-      package: ['userpackage', 'authpackage'],
-      loader: {
-        keepCase: true,
-        longs: Number,
-        enums: String,
-        defaults: true,
-        oneofs: true,
-      },
+      package: ['userpackage', 'authpackage', 'messages'],
     },
   });
   await app.startAllMicroservices();

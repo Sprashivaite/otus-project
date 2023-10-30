@@ -10,9 +10,38 @@ export class UserService {
     return user;
   }
 
+  async changeUser(data: User): Promise<User> {
+    const { age, firstName, lastName, id } = data;
+    const user: User = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new Error('Пользователь не найден');
+    }
+
+    const updatedUser: User = await this.userRepository.save({
+      ...user,
+      age,
+      firstName,
+      lastName,
+    });
+    console.log(updatedUser);
+    return updatedUser;
+  }
+
+  async getFriends(id: number): Promise<User[]> {
+    const user: User = await this.userRepository.findOne({
+      where: { id },
+      relations: { friends: true },
+    });
+
+    return user.friends;
+  }
+
   async addFriend(id: number, friendId: number): Promise<{ message: string }> {
     const user = await this.userRepository.findOne({
       where: { id },
+      relations: { friends: true },
     });
     if (!user) {
       throw new Error('Пользователь не найден');
@@ -34,10 +63,9 @@ export class UserService {
     }
 
     user.friends = user.friends || [];
-    user.friends.push(friend);
     console.log(user);
-    await this.userRepository.save(user);
-
+    user.friends.push(friend);
+    await this.userRepository.manager.save(user);
     return { message: `Друг ${friend.username} добавлен` };
   }
 }

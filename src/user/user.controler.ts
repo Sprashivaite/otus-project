@@ -12,6 +12,19 @@ export class UserController {
     const user: User = await this.userService.getUser(id);
     return user;
   }
+
+  @GrpcMethod('UserService', 'changeUser')
+  async changeUser(data: User): Promise<User> {
+    const user: User = await this.userService.changeUser(data);
+    return user;
+  }
+
+  @GrpcMethod('UserService', 'getFriends')
+  async getFriends({ id }: User): Promise<{ friends: User[] }> {
+    const users: User[] = await this.userService.getFriends(id);
+    return { friends: users };
+  }
+
   @GrpcMethod('UserService', 'addFriend')
   async addFriend({ id, friendId }: FriendDto): Promise<{ message: string }> {
     const friend = await this.userService.addFriend(id, friendId);

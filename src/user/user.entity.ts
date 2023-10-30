@@ -1,9 +1,11 @@
+import { Message } from 'src/message/message.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -17,7 +19,22 @@ export class User {
   @Column()
   password: string;
 
-  @ManyToMany(() => User)
+  @Column({ nullable: true })
+  firstName: string;
+
+  @Column({ nullable: true })
+  lastName: string;
+
+  @Column({ nullable: true })
+  age: number;
+
+  @ManyToMany(() => User, (user) => user.friends)
   @JoinTable()
   friends: User[];
+
+  @OneToMany(() => Message, (message) => message.sender)
+  sentMessages: Message[];
+
+  @OneToMany(() => Message, (message) => message.receiver)
+  receivedMessages: Message[];
 }

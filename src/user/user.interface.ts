@@ -1,7 +1,9 @@
 export type User = {
   id: string;
   username: string;
-  friends: string[];
+  firstName: string;
+  lastName: string;
+  age: number;
 };
 export type FriendDto = {
   id: number;

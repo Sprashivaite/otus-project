@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package files;
+
+message FileUpload {
+  bytes content = 1;
+  string filename = 2;
+  int32 userId = 3;
+}
+
+message FileInfo {
+  string filename = 1;
+}
+
+message ImageFile {
+  bytes content = 1;
+}
+
+service FilesService {
+  rpc UploadFile(FileUpload) returns (FileInfo);
+  rpc GetImage(FileInfo) returns (stream ImageFile);
+}

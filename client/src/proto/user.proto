@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package userpackage;
+
+service UserService {
+  rpc getUser (UserId) returns (User);
+  rpc changeUser (User) returns (User);
+  rpc addFriend (FriendId) returns (Message);
+  rpc getFriends(UserId) returns (FriendList);
+  rpc uploadAvatar(AvatarUpload) returns (User);
+}
+
+message User {
+  int32 id = 1;
+  string username = 2;
+  string firstName = 3;
+  string lastName = 4;
+  int32 age = 5;
+  string avatar = 6;
+}
+
+message AvatarUpload {
+  int32 userId = 1;
+  string filename = 2;
+  bytes imageData = 3;
+}
+
+message FriendList {
+  repeated User friends = 1;
+}
+
+message UserId {
+  int32 id = 1;
+}
+
+message FriendId {
+  int32 id = 1;
+  int32 friendId = 2;
+}
+
+message Message {
+  string message = 1;
+}
